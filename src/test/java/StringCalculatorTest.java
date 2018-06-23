@@ -37,12 +37,22 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void addShouldReturnSumForNewLineSplitter() {
+    public void addShouldReturnSumForNewLineDelimiter() {
         assertEquals(13, calculator.add("1\n3,5\n4"));
     }
 
     @Test
     public void addShouldReturn0IfInputNotValid() {
         assertEquals(0, calculator.add("7,\n5"));
+    }
+
+    @Test
+    public void addShouldReturnForCustomDelimiter() {
+        assertEquals(6, calculator.add("//;\n2;4"));
+    }
+
+    @Test
+    public void addShouldReturnSumForCustomDelimiterAndInitialInputs() {
+        assertEquals(12, calculator.add("//*\n3*5,2\n2"));
     }
 }
