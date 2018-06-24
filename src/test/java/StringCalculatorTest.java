@@ -1,10 +1,17 @@
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.security.InvalidParameterException;
 
 import static org.junit.Assert.assertEquals;
 
 public class StringCalculatorTest {
 
     private StringCalculator calculator = new StringCalculator();
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void addShouldReturn0WhenEmptyInput() {
@@ -23,12 +30,12 @@ public class StringCalculatorTest {
 
     @Test
     public void addShouldReturnSumWhenAPositiveAndNegativeNumberEntered() {
-        assertEquals(7, calculator.add("9,-2"));
+        assertEquals(11, calculator.add("9,2"));
     }
 
     @Test
     public void addShouldReturnNegativeNumberWhenNegativeNumberEntered() {
-        assertEquals(-3, calculator.add("-3"));
+        assertEquals(13, calculator.add("13"));
     }
 
     @Test
@@ -42,11 +49,6 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void addShouldReturn0IfInputNotValid() {
-        assertEquals(0, calculator.add("7,\n5"));
-    }
-
-    @Test
     public void addShouldReturnForCustomDelimiter() {
         assertEquals(6, calculator.add("//;\n2;4"));
     }
@@ -54,5 +56,12 @@ public class StringCalculatorTest {
     @Test
     public void addShouldReturnSumForCustomDelimiterAndInitialInputs() {
         assertEquals(12, calculator.add("//*\n3*5,2\n2"));
+    }
+
+    @Test
+    public void addShouldReturnExceptionIfNegativeNumberEntered() {
+        expectedException.expect(InvalidParameterException.class);
+        expectedException.expectMessage("Negatives Not allowed -> -1");
+        calculator.add("3,-1");
     }
 }

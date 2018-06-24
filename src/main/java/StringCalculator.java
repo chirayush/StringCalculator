@@ -1,26 +1,34 @@
+import java.security.InvalidParameterException;
+
 class StringCalculator {
 
     int add(String allInputs) {
         String[] inputs = splitIntoInputs(allInputs);
 
-        if (checkIfInputIsValid(inputs)) return 0;
+        return sumInputs(inputs);
+    }
 
+    private int sumInputs(String[] inputs) {
         int sum = 0;
         for (String input : inputs) {
-            sum += getIntValue(input);
+            sum += convertIntoInt(input);
         }
         return sum;
     }
 
-    private boolean checkIfInputIsValid(String[] inputs) {
-        for (String input : inputs) {
-            try {
-                Integer.parseInt(input);
-            } catch (NumberFormatException ex) {
-                return true;
+    private int convertIntoInt(String input) {
+        try {
+            if (input.length() == 0) {
+                return 0;
             }
+            int num = Integer.parseInt(input);
+            if (num < 0) {
+                throw new InvalidParameterException("Negatives Not allowed -> " + num);
+            }
+            return num;
+        } catch (NumberFormatException ex) {
+            return 0;
         }
-        return false;
     }
 
     private String[] splitIntoInputs(String allInputs) {
@@ -46,9 +54,5 @@ class StringCalculator {
         return allInputs
                 .replace("\n", ",")
                 .split(",");
-    }
-
-    private int getIntValue(String input) {
-        return Integer.parseInt(input);
     }
 }
