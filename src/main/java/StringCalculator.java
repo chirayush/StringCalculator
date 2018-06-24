@@ -1,14 +1,20 @@
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 class StringCalculator {
 
     int add(String allInputs) {
-        String[] inputs = splitIntoInputs(allInputs);
+        String[] inputs = splitIntoInputs(allInputs).toArray(String[]::new);
 
-        return sumInputs(inputs);
+        if (!isValidInput(inputs)) return 0;
+
+        return sumOf(inputs);
     }
 
-    private int sumInputs(String[] inputs) {
+    private int sumOf(String[] inputs) {
         int sum = 0;
         for (String input : inputs) {
             sum += convertIntoInt(input);
@@ -17,21 +23,32 @@ class StringCalculator {
     }
 
     private int convertIntoInt(String input) {
-        try {
-            if (input.length() == 0) {
-                return 0;
-            }
-            int num = Integer.parseInt(input);
-            if (num < 0) {
-                throw new InvalidParameterException("Negatives Not allowed -> " + num);
-            }
-            return num;
-        } catch (NumberFormatException ex) {
-            return 0;
-        }
+        return Integer.parseInt(input);
     }
 
-    private String[] splitIntoInputs(String allInputs) {
+    private boolean isValidInput(String[] inputs) {
+        List<Integer> negativeNumbers = new ArrayList<>();
+        for (String input : inputs) {
+            try {
+                int num = Integer.parseInt(input);
+                if (num < 0) {
+                    negativeNumbers.add(num);
+                }
+            } catch (NumberFormatException ex) {
+                return false;
+            }
+        }
+        if (negativeNumbers.size() > 0) {
+            StringBuilder negativeNumbersString = new StringBuilder();
+            negativeNumbers.forEach(negativeNumber -> {
+                negativeNumbersString.append(" ").append(negativeNumber);
+            });
+            throw new InvalidParameterException("Negatives Not allowed ->" + negativeNumbersString);
+        }
+        return true;
+    }
+
+    private Stream<String> splitIntoInputs(String allInputs) {
         char delimiter = getCustomDelimiter(allInputs);
         if (delimiter != ' ') {
             String customDelimitedInputs = allInputs.substring(4)
@@ -50,9 +67,9 @@ class StringCalculator {
         return delimiter;
     }
 
-    private String[] splitIntoBasicInputs(String allInputs) {
-        return allInputs
+    private Stream<String> splitIntoBasicInputs(String allInputs) {
+        return Arrays.stream(allInputs
                 .replace("\n", ",")
-                .split(",");
+                .split(","));
     }
 }
