@@ -7,40 +7,35 @@ import java.util.stream.Stream;
 class StringCalculator {
 
     int add(String allInputs) {
-        String[] inputs = splitIntoInputs(allInputs).toArray(String[]::new);
+        Stream<String> inputsStream  = splitIntoInputs(allInputs);
 
-        if (!isValidInput(inputs)) return 0;
+        if (!isValidInput(inputsStream)) return 0;
 
-        return sumOf(inputs);
+        return sumOf(inputsStream);
     }
 
-    private int sumOf(String[] inputs) {
-        int sum = 0;
-        for (String input : inputs) {
-            sum += convertIntoInt(input);
+    private int sumOf(Stream<String> inputs) {
+        return inputs.mapToInt(Integer::parseInt)
+                .sum();
+    }
+
+    private boolean isValidInput(Stream<String> inputs) {
+
+        List<Integer> negativeNumbersList = new ArrayList<>();
+        try {
+
+            inputs.mapToInt(Integer::parseInt)
+                    .filter(num -> num < 0)
+                    .forEach(negativeNumbersList::add);
+
+
+        } catch (NumberFormatException ex) {
+            return false;
         }
-        return sum;
-    }
 
-    private int convertIntoInt(String input) {
-        return Integer.parseInt(input);
-    }
-
-    private boolean isValidInput(String[] inputs) {
-        List<Integer> negativeNumbers = new ArrayList<>();
-        for (String input : inputs) {
-            try {
-                int num = Integer.parseInt(input);
-                if (num < 0) {
-                    negativeNumbers.add(num);
-                }
-            } catch (NumberFormatException ex) {
-                return false;
-            }
-        }
-        if (negativeNumbers.size() > 0) {
+        if (negativeNumbersList.size() > 0) {
             StringBuilder negativeNumbersString = new StringBuilder();
-            negativeNumbers.forEach(negativeNumber -> {
+            negativeNumbersList.forEach(negativeNumber -> {
                 negativeNumbersString.append(" ").append(negativeNumber);
             });
             throw new InvalidParameterException("Negatives Not allowed ->" + negativeNumbersString);
