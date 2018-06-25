@@ -60,14 +60,14 @@ public class StringCalculatorTest {
 
     @Test
     public void addShouldReturnExceptionIfNegativeNumberEntered() {
-        expectedException.expect(InvalidParameterException.class);
+        expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("Negatives Not allowed -> -1");
         calculator.add("3,-1");
     }
 
     @Test
     public void addShouldReturnExceptionIfMultipleNegativeNumberEntered() {
-        expectedException.expect(InvalidParameterException.class);
+        expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("Negatives Not allowed -> -1 -5");
         calculator.add("3,-1\n2,-5");
     }

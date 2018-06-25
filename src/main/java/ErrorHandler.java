@@ -17,7 +17,7 @@ class ErrorHandler {
 
         if (negativeNumbersList.size() > 0) {
             StringBuilder negativeNumbersString = buildNegativeNumberString(negativeNumbersList);
-            throw new InvalidParameterException("Negatives Not allowed ->" + negativeNumbersString);
+            throw new IllegalArgumentException("Negatives Not allowed ->" + negativeNumbersString);
         }
         return true;
     }
