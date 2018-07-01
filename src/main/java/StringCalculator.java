@@ -28,7 +28,7 @@ class StringCalculator {
         Arrays.stream(inputs)
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num < 0)
-                .collect(negativeNumbers::add);
+                .forEach(num -> negativeNumbers.add(num));
 
         return Arrays.stream(inputs)
                 .mapToInt(Integer::parseInt)
