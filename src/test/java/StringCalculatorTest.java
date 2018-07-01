@@ -6,6 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 public class StringCalculatorTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     private StringCalculator stringCalculator = new StringCalculator();
 
     @Test
@@ -53,14 +55,27 @@ public class StringCalculatorTest {
         assertEquals(7, stringCalculator.add("//&\n2&5"));
     }
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void addShouldThrowExceptionIfNegativeNumber() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("negatives not allowed -3");
-        stringCalculator.add("-3,5");
+        expectedException.expectMessage("negatives not allowed -7");
+        stringCalculator.add("-7,5");
     }
 
+    @Test
+    public void addShouldThrowExceptionAndPrintMultipleNegativeNumber() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("negatives not allowed -3 -5");
+        stringCalculator.add("-3,5\n-5");
+    }
+
+    @Test
+    public void addShouldIgnoreNumbersGreaterThan1000() {
+        assertEquals(2, stringCalculator.add("2,1001"));
+    }
+
+    @Test
+    public void addShouldNotIgnore1000() {
+        assertEquals(1002, stringCalculator.add("2,1000"));
+    }
 }

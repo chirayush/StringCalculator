@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class StringCalculator {
@@ -35,15 +37,28 @@ class StringCalculator {
     }
 
     private int sum(Scanner scanner) {
+        List<Integer> negativeNumbersList = new ArrayList<>();
         int sum = 0;
         while (scanner.hasNextInt()) {
             int currentNumber = scanner.nextInt();
             if (currentNumber < 0) {
-                throw new IllegalArgumentException("negatives not allowed -3");
+                negativeNumbersList.add(currentNumber);
+            } else if (currentNumber < 1001) {
+                sum += currentNumber;
             }
-            sum += currentNumber;
         }
+        handleNegativeNumbers(negativeNumbersList);
 
         return sum;
+    }
+
+    private void handleNegativeNumbers(List<Integer> negativeNumbersList) {
+        if (!negativeNumbersList.isEmpty()) {
+            StringBuilder negativeString = new StringBuilder();
+            for (int negNum : negativeNumbersList) {
+                negativeString.append(negNum).append(" ");
+            }
+            throw new IllegalArgumentException("negatives not allowed " + negativeString);
+        }
     }
 }
