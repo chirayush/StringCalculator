@@ -1,4 +1,6 @@
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,14 +53,14 @@ public class StringCalculatorTest {
         assertEquals(7, stringCalculator.add("//&\n2&5"));
     }
 
-//    @Rule
-//    public ExpectedException expectedException = ExpectedException.none();
-//
-//    @Test
-//    public void addShouldThrowExceptionIfNegativeNumber() {
-//        expectedException.expect(IllegalArgumentException.class);
-//        expectedException.expectMessage("negatives not allowed -3");
-//        stringCalculator.add("-3,5");
-//    }
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
+    @Test
+    public void addShouldThrowExceptionIfNegativeNumber() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("negatives not allowed -3");
+        stringCalculator.add("-3,5");
+    }
 
 }
