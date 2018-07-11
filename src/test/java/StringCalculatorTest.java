@@ -21,7 +21,7 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void addShouldReturn5When5IsEntered() {
+    public void addShouldReturn15When15IsEntered() {
         assertEquals(15, stringCalculator.add("15"));
     }
 
@@ -50,22 +50,20 @@ public class StringCalculatorTest {
         assertEquals(7, stringCalculator.add("//-\n2-5"));
     }
 
-    // ToDo : Get star working
+    @Test
+    public void addShouldThrowExceptionIfNegativeNumber() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("negatives not allowed -7");
+        stringCalculator.add("-7,5");
+    }
 
-//    @Test
-//    public void addShouldThrowExceptionIfNegativeNumber() {
-//        expectedException.expect(IllegalArgumentException.class);
-//        expectedException.expectMessage("negatives not allowed -7");
-//        stringCalculator.add("-7,5");
-//    }
-//
-//    @Test
-//    public void addShouldThrowExceptionAndPrintMultipleNegativeNumber() {
-//        expectedException.expect(IllegalArgumentException.class);
-//        expectedException.expectMessage("negatives not allowed -3 -5");
-//        stringCalculator.add("-3,5\n-5");
-//    }
-//
+    @Test
+    public void addShouldThrowExceptionAndPrintMultipleNegativeNumber() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("negatives not allowed -3 -5");
+        stringCalculator.add("-3,5\n-5");
+    }
+
     @Test
     public void addShouldIgnoreNumbersGreaterThan1000() {
         assertEquals(2, stringCalculator.add("2,1001"));

@@ -7,16 +7,18 @@ final class StringCalculator {
             return 0;
         }
 
-        String delimiterPattern = "[,\n]";
-
+        String customDelimiter = "[,\\n]";
         if (input.startsWith("//")) {
-            delimiterPattern += "|" + input.substring(2, 3);
+            customDelimiter += "|" + input.substring(2, 3);
         }
 
-        return Arrays.stream(input.split(delimiterPattern))
-                .filter(s -> s.matches("\\d+"))
+        return Arrays.stream(input.split(customDelimiter))
+                .filter(s -> s.matches("-?\\d+"))
                 .mapToInt(Integer::parseInt)
-                .filter(value -> value <= 1000)
+                .peek(x -> {
+                    if (x < 0) throw new IllegalArgumentException("negatives not allowed " + x);
+                })
+                .filter(s -> s <= 1000)
                 .sum();
     }
 }
