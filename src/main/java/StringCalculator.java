@@ -7,7 +7,7 @@ final class StringCalculator {
             return 0;
         }
 
-        String delimiterPattern = ",|\n";
+        String delimiterPattern = "[,\n]";
 
         if (input.startsWith("//")) {
             delimiterPattern += "|" + input.substring(2, 3);
